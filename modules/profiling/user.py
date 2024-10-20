@@ -33,3 +33,14 @@ def getPasswordHint(dest_path):
         except Registry.RegistryValueNotFoundException:
             continue
     return list
+
+def getResetData(dest_path):
+    list = []
+    dest_path = os.path.join(dest_path, r"SAM")
+    key = Registry.Registry(dest_path).open("SAM\\Domains\\Account\\Users")
+    for subkey in key.subkeys():
+        try:
+            list.append((subkey.name(), subkey.value('ResetData').raw_data()))
+        except Registry.RegistryValueNotFoundException:
+            continue
+    return list
